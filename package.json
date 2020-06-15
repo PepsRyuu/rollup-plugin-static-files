@@ -1,7 +1,7 @@
 {
   "name": "rollup-plugin-static-files",
   "description": "Copies static files into output directory with support for hash replacement.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "index.js",
   "author": "Paul Sweeney",
   "license": "MIT",
