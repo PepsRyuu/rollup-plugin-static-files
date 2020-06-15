@@ -45,3 +45,27 @@ Your index file should refer to these files using their final names, generated b
     </html>
 
 ```
+
+## Public Path
+
+If a HTML file includes files that start with a subdirectory, but this subdirectory is only mentioned in the ```output.dir``` option and not in ```output.entryFileNames``` etc, then use this option to make the plugin aware that all outputs start with this subdirectory.
+
+**Example:**
+
+```
+output: {
+    dir: 'dist/client',
+    entryFileNames: '[name].[hash].js'
+}
+
+<script src="/client/main.[hash].js"></script>
+```
+
+For the plugin: 
+
+```
+static_files({
+    include: ['./public'],
+    publicPath: '/client'
+})
+```

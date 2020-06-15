@@ -12,6 +12,16 @@ function findMatchingFile (pattern, bundle) {
 }
 
 module.exports = function (options) {
+    let publicPath = options.publicPath || '/';
+
+    if (!publicPath.startsWith('/')) {
+        publicPath = '/' + options.publicPath;
+    }
+
+    if (!publicPath.endsWith('/')) {
+        publicPath = publicPath + '/';
+    }
+
     return {
         generateBundle (outputOptions, bundle) {
             let target_directory = outputOptions.dir || path.dirname(outputOptions.file);
@@ -31,10 +41,17 @@ module.exports = function (options) {
                         ['src', 'href'].forEach(attr => {
                             let value = el.attr(attr);
                             if (value) {
-                                let pattern = new RegExp(`^${value.replace('[hash]', '([a-f0-9]+)').substring(1)}$`);
+                                let isAbsolute = value.startsWith('/');
+
+                                if (isAbsolute) {
+                                    value = value.replace(publicPath, '');
+                                }
+
+                                let pattern = new RegExp(`^${value.replace('[hash]', '([a-f0-9]+)')}$`);
                                 let file = findMatchingFile(pattern, bundle);
+                               
                                 if (file) {
-                                    el.attr(attr, '/' + file);
+                                    el.attr(attr, isAbsolute? publicPath + file : file);
                                 }
                             }
                         });
