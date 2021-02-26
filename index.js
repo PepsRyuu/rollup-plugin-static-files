@@ -27,7 +27,12 @@ module.exports = function (options) {
             let target_directory = outputOptions.dir || path.dirname(outputOptions.file);
 
             (options.include || []).forEach(directory => {
-                fs.copySync(directory, target_directory);
+	            fs.copySync(directory, target_directory, {
+		            filter: file =>
+			            !((options.exclude || [])
+				            .find(f => file.match(new RegExp(f)))
+			            )
+	            });
 
                 let htmlFiles = klawSync(target_directory, { 
                     filter: file => file.path.endsWith('.html') 

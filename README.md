@@ -15,7 +15,8 @@ module.exports = {
     ...
     plugins: [
         static_files({
-            include: ['./public']
+            include: ['./public'],
+            exclude: ['./public/userdata']
         })
     ]
 }
