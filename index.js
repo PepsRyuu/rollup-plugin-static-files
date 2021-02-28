@@ -11,6 +11,10 @@ function findMatchingFile (pattern, bundle) {
     }
 }
 
+function normalizedFile(file) {
+    return path.resolve(process.cwd(), file);
+}
+
 module.exports = function (options) {
     let publicPath = options.publicPath || '/';
 
@@ -27,10 +31,17 @@ module.exports = function (options) {
             let target_directory = outputOptions.dir || path.dirname(outputOptions.file);
 
             (options.include || []).forEach(directory => {
-                fs.copySync(directory, target_directory);
+                fs.copySync(directory, target_directory, {
+                    filter: includedFile => {
+                        const file = normalizedFile(includedFile)
+                        return !((options.exclude || [])
+                            .find(f => file.startsWith(normalizedFile(f)))
+                        )
+                    }
+                });
 
-                let htmlFiles = klawSync(target_directory, { 
-                    filter: file => file.path.endsWith('.html') 
+                let htmlFiles = klawSync(target_directory, {
+                    filter: file => file.path.endsWith('.html')
                 });
 
                 htmlFiles.forEach(file => {
@@ -49,7 +60,7 @@ module.exports = function (options) {
 
                                 let pattern = new RegExp(`^${value.replace('[hash]', '([a-f0-9]+)')}$`);
                                 let file = findMatchingFile(pattern, bundle);
-                               
+
                                 if (file) {
                                     el.attr(attr, isAbsolute? publicPath + file : file);
                                 }
@@ -60,7 +71,7 @@ module.exports = function (options) {
                     fs.writeFileSync(file.path, $.html());
                 });
 
-            });            
+            });
         }
     }
 }
