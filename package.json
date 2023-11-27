@@ -1,7 +1,7 @@
 {
-  "name": "rollup-plugin-static-files",
+  "name": "@wunderlins/rollup-plugin-static-files",
   "description": "Copies static files into output directory with support for hash replacement.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "index.js",
   "author": "Paul Sweeney",
   "license": "MIT",
@@ -9,5 +9,12 @@
     "cheerio": "^1.0.0-rc.2",
     "fs-extra": "^7.0.1",
     "klaw-sync": "^6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wunderlins/rollup-plugin-static-files"
+  },
+  "publishConfig": {
+    "@wunderlins:registry": "https://npm.pkg.github.com"
   }
 }
