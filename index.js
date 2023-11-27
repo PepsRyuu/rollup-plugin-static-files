@@ -58,7 +58,7 @@ module.exports = function (options) {
                                     value = value.replace(publicPath, '');
                                 }
 
-                                let pattern = new RegExp(`^${value.replace('[hash]', '([a-f0-9]+)')}$`);
+                                let pattern = new RegExp(`^${value.replace('[hash]', '([a-zA-Z0-9]+)')}$`);
                                 let file = findMatchingFile(pattern, bundle);
 
                                 if (file) {
